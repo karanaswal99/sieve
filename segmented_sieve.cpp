@@ -13,7 +13,7 @@
 #include <cstdlib>
 #include <stdint.h>
 
-/// Set your CPUs L1 data cache size (in bytes) here
+/// Set your CPU's L1 data cache size (in bytes) here
 const int L1D_CACHE_SIZE = 32768;
 
 
