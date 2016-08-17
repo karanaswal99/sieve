@@ -48,7 +48,7 @@ void segmented_sieve(int64_t limit, int segment_size = L1D_CACHE_SIZE)
     // current segment = interval [low, high]
     int64_t high = std::min(low + segment_size - 1, limit);
 
-    // store small primes needed to cross off multiples
+    // add new sieving primes <= sqrt(high)
     for (; s * s <= high; s++)
     {
       if (is_prime[s])
@@ -57,6 +57,7 @@ void segmented_sieve(int64_t limit, int segment_size = L1D_CACHE_SIZE)
           next.push_back((int)(s * s - low));
       }
     }
+    
     // sieve the current segment
     for (std::size_t i = 1; i < primes.size(); i++)
     {
@@ -74,21 +75,15 @@ void segmented_sieve(int64_t limit, int segment_size = L1D_CACHE_SIZE)
   std::cout << count << " primes found." << std::endl;
 }
 
-/// Usage: ./segmented_sieve n size
-/// @param n     Sieve the primes up to n.
-/// @param size  Size of the sieve array in bytes.
+/// Usage: ./segmented_sieve n
+/// @param n  Sieve the primes up to n.
 ///
 int main(int argc, char** argv)
 {
-  // generate the primes below this number
   int64_t limit = 100000000;
   if (argc >= 2)
     limit = atol(argv[1]);
 
-  int size = L1D_CACHE_SIZE;
-  if (argc >= 3)
-    size = atoi(argv[2]);
-
-  segmented_sieve(limit, size);
+  segmented_sieve(limit);
   return 0;
 }
