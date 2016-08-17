@@ -18,14 +18,15 @@ const int L1D_CACHE_SIZE = 32768;
 
 /// Generate primes using the segmented sieve of Eratosthenes.
 /// This algorithm uses O(n log log n) operations and O(sqrt(n)) space.
-/// @param limit         Sieve primes <= limit.
-/// @param segment_size  Size of the sieve array in bytes.
+/// @param limit  Sieve primes <= limit.
 ///
-void segmented_sieve(int64_t limit, int segment_size = L1D_CACHE_SIZE)
+void segmented_sieve(int64_t limit)
 {
   int sqrt = (int) std::sqrt((double) limit);
+  int segment_size = std::max(sqrt, L1D_CACHE_SIZE);
+
   int64_t count = (limit < 2) ? 0 : 1;
-  int64_t s = 2;
+  int64_t s = 3;
   int64_t n = 3;
 
   // vector used for sieving
@@ -49,7 +50,7 @@ void segmented_sieve(int64_t limit, int segment_size = L1D_CACHE_SIZE)
     int64_t high = std::min(low + segment_size - 1, limit);
 
     // add new sieving primes <= sqrt(high)
-    for (; s * s <= high; s++)
+    for (; s * s <= high; s += 2)
     {
       if (is_prime[s])
       {
@@ -59,7 +60,7 @@ void segmented_sieve(int64_t limit, int segment_size = L1D_CACHE_SIZE)
     }
     
     // sieve the current segment
-    for (std::size_t i = 1; i < primes.size(); i++)
+    for (std::size_t i = 0; i < primes.size(); i++)
     {
       int j = next[i];
       for (int k = primes[i] * 2; j < segment_size; j += k)
