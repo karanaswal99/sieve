@@ -16,7 +16,6 @@
 /// Set your CPU's L1 data cache size (in bytes) here
 const int L1D_CACHE_SIZE = 32768;
 
-
 /// Generate primes using the segmented sieve of Eratosthenes.
 /// This algorithm uses O(n log log n) operations and O(sqrt(n)) space.
 /// @param limit         Sieve primes <= limit.
