@@ -34,7 +34,7 @@ void segmented_sieve(int64_t limit)
   std::vector<char> sieve(segment_size);
   std::vector<char> is_prime(sqrt + 1, true);
   std::vector<int64_t> primes;
-  std::vector<int64_t> next;
+  std::vector<int64_t> indexes;
 
   for (int64_t low = 0; low <= limit; low += segment_size)
   {
@@ -55,18 +55,18 @@ void segmented_sieve(int64_t limit)
     {
       if (is_prime[s])
       {
-        primes.push_back(s);
-          next.push_back(s * s - low);
+         primes.push_back(s);
+        indexes.push_back(s * s - low);
       }
     }
 
     // segmented sieve
     for (std::size_t i = 0; i < primes.size(); i++)
     {
-      int64_t j = next[i];
+      int64_t j = indexes[i];
       for (int64_t k = primes[i] * 2; j < segment_size; j += k)
         sieve[j] = false;
-      next[i] = j - segment_size;
+      indexes[i] = j - segment_size;
     }
 
     for (; n <= high; n += 2)
